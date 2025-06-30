@@ -261,6 +261,15 @@ export const textToAudioStream = (url: string, isPublicAPI: boolean, header: { c
 export const fetchAccessToken = async (appCode: string, userId?: string) => {
   const headers = new Headers()
   headers.append('X-App-Code', appCode)
+
+  // 自定义代码
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const tokenFromParams = urlParams.get('token') || ''; 
+  globalThis.localStorage.setItem('mtk',tokenFromParams)
+  headers.append('token', tokenFromParams)
+  // 自定义代码
+
   const url = userId ? `/passport?user_id=${encodeURIComponent(userId)}` : '/passport'
   return get(url, { headers }) as Promise<{ access_token: string }>
 }

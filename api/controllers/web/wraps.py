@@ -67,6 +67,34 @@ def decode_jwt_token():
         _validate_webapp_token(decoded, app_web_auth_enabled, system_features.webapp_auth.enabled)
         _validate_user_accessibility(decoded, app_code, app_web_auth_enabled, system_features.webapp_auth.enabled)
 
+        # 自定义代码
+
+        token = decoded.get("mtk")
+        if token is not None:
+            #raise Unauthorized("token header is missing.")
+        #验证token是否有效,获取用户信息,user_id,group_id
+           verify_url =  "https://marketapi.cticert.com/CAI/CAI/VerifyUserLogin?token="+token
+           verify_result = requests.post(verify_url)
+        # verify_result.raise_for_status()
+           result = verify_result.json()
+           code = result.get("code")
+
+           if code != 200:
+               raise Unauthorized("token header is error.")
+           data = result.get("data", {})
+           #user_id = data.get("userId")
+           group_code = data.get("groupCode")
+        #查询app_code是否关联group_id
+           sql_query = """ SELECT  count(1) FROM apps t 
+INNER JOIN tenants a on t.tenant_id=a.id INNER JOIN sites s on s.app_id=t.id 
+ where  t.status='normal' and t.enable_api='t' and t.enable_site='t' and (a.group_code ='C0001' OR a.group_code= :group_code) and s.code= :app_code"""
+           with db.engine.begin() as conn:
+                count = conn.execute(db.text(sql_query), {"group_code": group_code,"app_code": app_code})
+           if count == 0:
+               raise Unauthorized("Agent is not find.")
+               
+        # 自定义代码
+
         return app_model, end_user
     except Unauthorized as e:
         if system_features.webapp_auth.enabled:

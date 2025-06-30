@@ -237,6 +237,19 @@ class RefreshTokenApi(Resource):
         parser.add_argument("refresh_token", type=str, required=True, location="json")
         args = parser.parse_args()
 
+        # 自定义代码
+        token = request.headers.get("token")
+        if token:
+          #  raise Unauthorized("token header is missing.")
+          #验证token是否有效,获取用户信息,user_id,group_id
+           verify_url =  "https://marketapi.cticert.com/CAI/CAI/VerifyUserLogin?token="+token
+           verify_result = requests.post(verify_url)
+           result = verify_result.json()
+           code = result.get("code")
+           if code != 200:
+              raise Unauthorized("token header is error.")
+        # 自定义代码
+
         try:
             new_token_pair = AccountService.refresh_token(args["refresh_token"])
             return {"result": "success", "data": new_token_pair.model_dump()}
