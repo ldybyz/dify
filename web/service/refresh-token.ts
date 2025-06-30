@@ -41,6 +41,10 @@ async function getNewAccessToken(timeout: number): Promise<void> {
       globalThis.addEventListener('beforeunload', releaseRefreshLock)
       const refresh_token = globalThis.localStorage.getItem('refresh_token')
 
+      //自定义代码,添加token
+      const token = globalThis.localStorage.getItem('mtk') || ''
+      //自定义代码
+
       // Do not use baseFetch to refresh tokens.
       // If a 401 response occurs and baseFetch itself attempts to refresh the token,
       // it can lead to an infinite loop if the refresh attempt also returns 401.
@@ -50,6 +54,7 @@ async function getNewAccessToken(timeout: number): Promise<void> {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;utf-8',
+          'token':token
         },
         body: JSON.stringify({ refresh_token }),
       }))
