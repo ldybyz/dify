@@ -15,6 +15,11 @@ from services.enterprise.enterprise_service import EnterpriseService
 from services.feature_service import FeatureService
 from services.webapp_auth_service import WebAppAuthService, WebAppAuthType
 
+# 自定义代码
+import requests
+# 自定义代码
+
+
 
 class PassportResource(Resource):
     """Base resource for passport."""
