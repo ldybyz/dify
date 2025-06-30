@@ -12,6 +12,11 @@ from models.model import App, EndUser, Site
 from services.enterprise.enterprise_service import EnterpriseService
 from services.feature_service import FeatureService
 
+# 自定义代码
+import requests
+# 自定义代码
+
+
 
 class PassportResource(Resource):
     """Base resource for passport."""
