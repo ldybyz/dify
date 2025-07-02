@@ -1178,6 +1178,14 @@ services:
     volumes:
       - ./volumes/unstructured:/app/data
 
+  lims:
+    image: limswechat:0.1
+    restart: always
+    ports:
+      - 8098:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:

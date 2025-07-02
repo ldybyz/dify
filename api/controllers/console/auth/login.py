@@ -34,6 +34,9 @@ from services.errors.account import AccountRegisterError
 from services.errors.workspace import WorkSpaceNotAllowedCreateError, WorkspacesLimitExceededError
 from services.feature_service import FeatureService
 
+# 自定义代码
+import requests
+# 自定义代码
 
 class LoginApi(Resource):
     """Resource for user login."""
@@ -237,17 +240,15 @@ class RefreshTokenApi(Resource):
         parser.add_argument("refresh_token", type=str, required=True, location="json")
         args = parser.parse_args()
 
-        # 自定义代码
-        token = request.headers.get("token")
-        if token:
-          #  raise Unauthorized("token header is missing.")
-          #验证token是否有效,获取用户信息,user_id,group_id
-           verify_url =  "https://marketapi.cticert.com/CAI/CAI/VerifyUserLogin?token="+token
-           verify_result = requests.post(verify_url)
-           result = verify_result.json()
-           code = result.get("code")
-           if code != 200:
-              raise Unauthorized("token header is error.")
+        # 自定义代码 不自动刷新token
+        # token = request.headers.get("token")
+        #if token:
+        #   verify_url =  "http://lims:8080/WeChatAuth/UserInfo?token="+token
+        #   verify_result = requests.post(verify_url)
+        #   result = verify_result.json()
+        #   code = result.get("code")
+        #   if code != 200:
+        #      return {"result": "fail", "data": "token header is error"}, 401
         # 自定义代码
 
         try:
