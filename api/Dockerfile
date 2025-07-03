@@ -21,7 +21,10 @@ RUN apt-get update \
 
 # Install Python dependencies
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --index https://mirrors.aliyun.com/pypi/simple/
+
+RUN export UV_DEFAULT_INDEX="https://mirrors.aliyun.com/pypi/simple"
+
+RUN uv sync --locked
 
 # production stage
 FROM base AS production
