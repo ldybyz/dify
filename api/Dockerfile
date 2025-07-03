@@ -6,7 +6,7 @@ WORKDIR /app/api
 # Install uv
 ENV UV_VERSION=0.6.14
 
-RUN pip install --no-cache-dir uv==${UV_VERSION}
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir uv==${UV_VERSION}
 
 
 FROM base AS packages

@@ -51,7 +51,8 @@ class PassportResource(Resource):
             raise Unauthorized("token header is error.")
         usrnam = result.get("data", "")
        
-
+        # 测试用userid存储工号
+        user_id = usrnam
 
         # 自定义代码
 
