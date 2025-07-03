@@ -23,7 +23,7 @@ RUN apt-get update \
 COPY pyproject.toml uv.lock ./
 
 RUN export UV_DEFAULT_INDEX="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
-    && uv sync --locked
+    && uv lock && uv sync --locked
 
 # production stage
 FROM base AS production
