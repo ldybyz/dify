@@ -265,8 +265,19 @@ export const fetchAccessToken = async (appCode: string, userId?: string) => {
   // 自定义代码
   const queryString = window.location.search
   const urlParams = new URLSearchParams(queryString)
-  const tokenFromParams = urlParams.get('token') || ''; 
-  globalThis.localStorage.setItem('mtk',tokenFromParams)
+  const tokenFromParams = urlParams.get('token') || '';
+  if(tokenFromParams!=='')
+  {
+    var existingToken = globalThis.localStorage.getItem('mtk');
+    if(existingToken !== tokenFromParams)
+    {
+      globalThis.localStorage.removeItem('console_token');
+      globalThis.localStorage.removeItem('refresh_token');  
+      globalThis.localStorage.removeItem('token');   
+    }
+    
+    globalThis.localStorage.setItem('mtk',tokenFromParams)
+  }
   headers.append('token', tokenFromParams)
   // 自定义代码
 
